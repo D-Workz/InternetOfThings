@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sensors</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="javascripts/script.js"></script>
+</head>
+<body>
+
+    <div class="container col-md-12">
+        These are two Sensors, in an IoT environment, which send data to an kafka buffer.
+    </div>
+    <div  class="container-output col-md-5">
+        <div class="header col-md-12" style="background-color: #dadada">
+            Sensor 1 Output Air Humidity in %
+            <input class="btn btn-success" type="submit" value="Stop" id="stop1" style="float: right">
+        </div>
+        <div id="container1-output" class="col-md-12 out">
+
+
+        </div>
+
+    </div>
+    <div  class="container-output col-md-5">
+        <div class="header col-md-12" style="background-color: #dadada">
+            Sensor 2 Output Temparature in C
+            <input class="btn btn-success" type="submit" value="Stop" id="stop2" style="float: right">
+        </div>
+        <div id="container2-output" class="col-md-12 out">
+
+
+        </div>
+
+    </div>
+</body>
+</html>

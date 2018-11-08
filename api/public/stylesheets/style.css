@@ -1,0 +1,26 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.container{
+  width: 75%;
+  display: block;
+  margin: auto;
+  position: relative;
+}
+
+.container-output{
+ border: solid 1px black;
+  min-height: 50px;
+  margin-left: 10px;
+}
+
+.out{
+  min-height: 100px !important;
+  display: block;
+}
