@@ -1,35 +1,71 @@
-var express = require('express');
-var router = express.Router();
-var kafka = require('kafka-node');
+const express = require('express');
+const router = express.Router();
+const kafka = require('kafka-node');
+const consumer1 = require('./../consumers/consumer1/consumer1');
+const consumer2 = require('./../consumers/consumer2/consumer2');
+const config = require('config');
 
+let nextConsumer = "consumer1";
 
-
-/* GET users listing. */
 router.post('/', function(req, res, next) {
-    // const
-    var kafka = require('kafka-node'),
-        Producer = kafka.Producer,
-        KeyedMessage = kafka.KeyedMessage,
-        client = new kafka.KafkaClient({kafkaHost: '92.42.47.172:9092'}),
-        producer = new Producer(client),
-        km = new KeyedMessage('key', 'message'),
-        payloads = [
-            { topic: 'testc', messages: 'hi', partition: 0 },
-            { topic: 'testc', messages: ['hello', 'world', km] }
-        ];
+    let sensor = req.body.sensor;
+    let value = req.body.value;
+    let currentOffset = parseInt(req.body.offset,10);
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth()+1;
+        let yyyy = today.getFullYear();
+        let hh = today.getHours();
+        let MM = today.getMinutes();
+        let ss = today.getSeconds();
+    let timestamp = dd+"-"+mm+"-"+yyyy+" "+hh+":"+MM+":"+ss;
+    let message = {
+        sensor: sensor,
+        value: value,
+        time: timestamp
+    };
+    let payload = {
+        topic : config.get("topic"),
+        messages: JSON.stringify(message),
+        partition: 0
+    };
+    let producer = getKafkaProducer();
+    producer.send([payload], function (err, data) {
+        //const url1="https://MEINAPIUSER:MEINAPIKEY@openwhisk.eu-gb.bluemix.net/api/v1/namespaces/p.haeusle%40student.uibk.ac.at_dev/actions/Consumer1";
+        switch (nextConsumer) {
+            case "consumer1":
+                consumer1.consumeFromKafka(currentOffset)
+                    .then(offset => {
+                        currentOffset = offset;
+                        nextConsumer = "consumer2";
+                        res.status(200).json({message:"ok"});
+                    });
+                break;
+            case "consumer2":
+                consumer2.consumeFromKafka(currentOffset)
+                    .then(offset => {
+                        currentOffset = offset;
+                        nextConsumer = "consumer2";
+                        res.status(200).json({message:"ok"});
+                    });
+                break;
+        }
 
+    });
+});
 
+module.exports = router;
+
+function getKafkaProducer() {
+    let Producer = kafka.Producer;
+    let client = new kafka.KafkaClient({kafkaHost: config.get("KafkaHost")});
+    let producer = new Producer(client);
     producer.on('ready', function () {
-            console.log("jo");
+        console.log("Producer ready.");
     });
 
     producer.on('error', function (err) {
         console.log(err);
     });
-
-    producer.send(payloads, function (err, data) {
-        res.json(data);
-    });
-});
-
-module.exports = router;
+    return producer;
+}

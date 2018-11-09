@@ -1,5 +1,6 @@
 var sensor1On = true;
 var sensor2On = true;
+var messageCount = 0;
 
 $(document).ready(function() {
     var $sens1Btn = $('#stop1');
@@ -13,7 +14,7 @@ $(document).ready(function() {
         else {
             $sens1Btn.val("stop");
             sensor1On = true;
-            airHumiditySensor();
+            sensor1();
         }
     });
 
@@ -25,34 +26,36 @@ $(document).ready(function() {
         else {
             $sens2Btn.val("stop");
             sensor2On = true;
-            fridgeSensor();
+            sensor2();
         }
     });
 
-    fridgeSensor();
-    airHumiditySensor();
+    sensor2();
+    setTimeout(function () {
+        sensor1();
+    }, 5000)
 
 });
 
 
 //2
-function fridgeSensor() {
+function sensor2() {
     setTimeout(function () {
-        var value = (Math.random() * 10) + 1;
+        var value = ((Math.random() * 10) + 1).toFixed(2);
         $('#container2-output').append('<div class="value">'+ value +'</div>');
-        con_sendValue(value, "temparature");
-        if(sensor1On) fridgeSensor();
-    }, 3000)
+        con_sendValue(value, "producer2");
+        if(sensor1On) sensor2();
+    }, 10000)
 }
 
 //1
-function airHumiditySensor() {
+function sensor1() {
     setTimeout(function () {
-        var value = (Math.random() * 70) + 15;
+        var value = ((Math.random() * 10) + 1).toFixed(2);
         $('#container1-output').append('<div class="value">'+ value +'</div>');
-        con_sendValue(value, "humidity");
-        if(sensor2On) airHumiditySensor();
-    }, 2000)
+        con_sendValue(value, "producer1");
+        if(sensor2On) sensor1();
+    }, 10000)
 }
 
 function con_sendValue(value, sensor) {
@@ -62,10 +65,12 @@ function con_sendValue(value, sensor) {
         url: url,
         type: "post",
         data: {
+            "offset":messageCount,
             "sensor":sensor,
             "value":value
         },
         success: function (data){
+            messageCount++;
             callback(data);
         }
     });
