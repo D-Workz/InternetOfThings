@@ -1,6 +1,5 @@
 {
   "DBUrl": "http://whisk_admin:some_passw0rd@92.42.47.172:5984",
-  "topic": "sensor8",
-  "DBName": "sensor8",
+  "topic": "sensor1741212311",
   "KafkaHost": "92.42.47.172:9092"
 }
