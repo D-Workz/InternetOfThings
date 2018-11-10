@@ -6,7 +6,7 @@ const kafkaHost = "92.42.47.172:9092";
 const dbName = "sensors";
 const mongourl='mongodb://92.42.47.172:27017/'+dbName;
 
-consumer2.consumeFromKafka = function (offset, partition){
+consumer2.consumeFromKafka = function (offset){
     return new Promise(function (resolve, reject) {
         let client = new kafka.KafkaClient({kafkaHost: kafkaHost});
         let Consumer = kafka.Consumer;

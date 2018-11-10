@@ -1,4 +1,3 @@
-let consumer1 = {};
 
 const kafka = require('kafka-node');
 const topic = "sensor1741212311";
@@ -6,10 +5,12 @@ const kafkaHost = "92.42.47.172:9092";
 const dbName = "sensors";
 const mongourl='mongodb://92.42.47.172:27017/'+dbName;
 
-consumer1.consumeFromKafka = function (offset){
+
+function main(params) {
     return new Promise(function (resolve, reject) {
         let client = new kafka.KafkaClient({kafkaHost: kafkaHost});
         let Consumer = kafka.Consumer;
+        let offset = this.data.offset;
         let consumer = new Consumer(client,
             [
                 { topic:topic, offset:offset, partition:0}
@@ -33,7 +34,7 @@ consumer1.consumeFromKafka = function (offset){
                     value: sensorValues.value,
                     time: sensorValues.time,
                     timestamp: message.timestamp,
-                    consumer:"consumer1"
+                    consumer:"consumer2"
                 };
                 collection.insertOne(sensorObj, function (err2, result) {
                     if (!err2) {
@@ -42,7 +43,7 @@ consumer1.consumeFromKafka = function (offset){
                             if(err){
                                 reject(err);
                             }else{
-                                console.log("Successfully closed consumer1.");
+                                console.log("Successfully closed consumer2.");
                                 resolve({status: "success", offset:offset});
                             }
                         })
@@ -54,8 +55,10 @@ consumer1.consumeFromKafka = function (offset){
                 database.close();
             });
         });
-    });
-};
+    }.bind({data:params}));
+}
 
 
-module.exports = consumer1;
+module.exports.main=main;
+
+
