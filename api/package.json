@@ -15,6 +15,7 @@
     "mongodb": "^3.1.9",
     "morgan": "~1.9.0",
     "nano": "^7.1.0",
+    "request": "latest",
     "pug": "2.0.0-beta11"
   }
 }

@@ -48,14 +48,18 @@ function sensor2(instant) {
     if(instant){
         var value = ((Math.random() * 10) + 1).toFixed(2);
         $('#container2-output').append('<div class="value">'+ value +'</div>');
-        con_sendValue(value, "producer2");
+        con_sendValue(value, "producer2", function (response) {
+            console.log({response})
+        });
         if(sensor1On) sensor2();
     }else {
         setTimeout(function () {
             var value = ((Math.random() * 10) + 1).toFixed(2);
             $('#container2-output').append('<div class="value">'+ value +'</div>');
-            con_sendValue(value, "producer2");
-            if(sensor1On) sensor2();
+            con_sendValue(value, "producer2", function (response) {
+                console.log({response})
+            });
+            if(sensor2On) sensor2();
         }, 10000)
     }
 
@@ -66,12 +70,14 @@ function sensor1() {
     setTimeout(function () {
         var value = ((Math.random() * 10) + 1).toFixed(2);
         $('#container1-output').append('<div class="value">'+ value +'</div>');
-        con_sendValue(value, "producer1");
-        if(sensor2On) sensor1();
+        con_sendValue(value, "producer1", function (response) {
+            console.log({response})
+        });
+        if(sensor1On) sensor1();
     }, 10000)
 }
 
-function con_sendValue(value, sensor) {
+function con_sendValue(value, sensor, callback) {
     console.log("sending value.");
     url = "http://localhost:3001/upload";
     $.ajax({
