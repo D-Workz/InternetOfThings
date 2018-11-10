@@ -3,6 +3,11 @@ const router = express.Router();
 const kafka = require('kafka-node');
 const config = require('config');
 const request = require('request');
+const dbName = "sensors";
+const mongoose = require('mongoose');
+mongoose.connect(config.get('mongo_url'), {useNewUrlParser: true});
+mongoose.Promise = require('bluebird');
+const SensorData = mongoose.model('data');
 
 router.post('/', function(req, res, next) {
 
@@ -35,6 +40,42 @@ router.post('/', function(req, res, next) {
         .catch(err => {
             res.status(400).json({message:"Error."});
         })
+
+});
+
+router.get('/', function(req, res, next) {
+
+    var MongoClient = require('mongodb').MongoClient;
+    MongoClient.connect(config.get('mongo_url'), { useNewUrlParser: true }, function(error, database) {
+        if (error) {
+            reject({status: "error with database"});
+        }
+        const db = database.db(dbName);
+        let collection = db.collection('data');
+
+
+        database.close();
+
+    });
+
+
+
+
+
+
+    //
+    //
+    // SensorData
+    //     .find({})
+    //     .then(allData => {
+    //         console.log("Couldnt get sensordata", allData);
+    //     })
+    //     .catch( err => {
+    //         console.log("Couldnt get sensordata", err);
+    //     })
+
+
+    res.status(200).json({message:"ok"});
 
 });
 

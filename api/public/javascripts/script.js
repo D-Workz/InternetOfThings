@@ -7,6 +7,7 @@ let nextConsumer = "consumer1";
 $(document).ready(function() {
     var $sens1Btn = $('#stop1');
     var $sens2Btn = $("#stop2");
+    var $startBtn = $("#start");
 
     $sens1Btn.click(function () {
         if(sensor1On){
@@ -32,13 +33,13 @@ $(document).ready(function() {
         }
     });
 
-    sensor2(true);
-    setTimeout(function () {
-        sensor1();
-    }, 5000);
-
-
-
+    $startBtn.click(function () {
+        sensor2(true);
+        setTimeout(function () {
+            sensor1();
+        }, 5000);
+        $startBtn.attr('disabled', true);
+    });
 
 });
 

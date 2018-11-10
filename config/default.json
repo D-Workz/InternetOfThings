@@ -3,5 +3,6 @@
   "topic": "sensor1733312",
   "KafkaHost": "92.42.47.172:9092",
   "IBM_ApiKey": "78c64815-2444-43df-8923-324a57feb5a7:THAC1WgnKsJ5ioQk5Sm0GvmF5RbpRb8aoWQuLu30hSuethZIURf15xHFOWyyo58H",
-  "IBM_ActionURL": "@openwhisk.eu-gb.bluemix.net/api/v1/namespaces/dennis.sommer.86%40gmail.com_dev/actions/"
+  "IBM_ActionURL": "@openwhisk.eu-gb.bluemix.net/api/v1/namespaces/dennis.sommer.86%40gmail.com_dev/actions/",
+  "mongo_url":"mongodb://92.42.47.172:27017/sensors"
 }
