@@ -4,13 +4,6 @@ const kafka = require('kafka-node');
 const config = require('config');
 const request = require('request');
 
-// For NODE
-const consumer1 = require('./../consumers/consumer1/consumer1');
-const consumer2 = require('./../consumers/consumer2/consumer2');
-
-
-
-
 router.post('/', function(req, res, next) {
 
     let nextConsumer = req.body.consumer;
@@ -48,6 +41,9 @@ router.post('/', function(req, res, next) {
 module.exports = router;
 
 function invokeConsumerOnNode(consumer, currentOffset) {
+    // For NODE
+    const consumer1 = require('./../consumers/consumer1/consumer1');
+    const consumer2 = require('./../consumers/consumer2/consumer2');
     switch (consumer) {
         case "consumer1":
             consumer1.consumeFromKafka(currentOffset)
@@ -91,7 +87,10 @@ function invokeConsumerOnOpenwhisk(consumer, offset) {
             url: url,
             method: "POST",
 
-            json: {"offset": offset}
+            json: {
+                "offset": offset,
+                "topic": config.get('topic')
+            }
         }, function (error, response, body) {
             if(error){
                 console.log(error);

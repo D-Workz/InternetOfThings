@@ -1,16 +1,25 @@
 
 const kafka = require('kafka-node');
-const topic = "sensor1741212311";
 const kafkaHost = "92.42.47.172:9092";
 const dbName = "sensors";
 const mongourl='mongodb://92.42.47.172:27017/'+dbName;
 
 
 function main(params) {
+    if(!params || params.size===0){
+        return({status:"error, no params"});
+    }
+    if(!params.offset){
+        return({status:"specify offset"});
+    }
+    if(!params.topic){
+        return({status:"specify topic"});
+    }
     return new Promise(function (resolve, reject) {
         let client = new kafka.KafkaClient({kafkaHost: kafkaHost});
         let Consumer = kafka.Consumer;
         let offset = this.data.offset;
+        let topic = this.data.topic;
         let consumer = new Consumer(client,
             [
                 { topic:topic, offset:offset, partition:0}
